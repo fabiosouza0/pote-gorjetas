@@ -24,7 +24,8 @@ button{border:0;padding:12px;border-radius:10px;font-weight:700;cursor:pointer}
 <body>
   <div class="card" role="application">
     <div>
-      <h1>Gravatinha</h1>
+      <h1>Pote de Gorjetas (Compartilhado)</h1>
+      <p class="muted">Clique +5 e todos conectados verão o total sendo atualizado em tempo real.</p>
       <div class="jar" id="jar" aria-live="polite">
         <div class="total"><span id="amount">0</span> <span class="muted">¢</span></div>
         <div id="subtitle" class="muted">Total</div>
@@ -42,8 +43,6 @@ button{border:0;padding:12px;border-radius:10px;font-weight:700;cursor:pointer}
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-/* ======== COLE AQUI SEU FIREBASE CONFIG (substitua o objeto abaixo) ========
-=========================================================================== */
 const firebaseConfig = {
   apiKey: "AIzaSyDe_CON0OGCFSQTRdSdIl_80Lz9f3hIUTM",
   authDomain: "pote-gorjetas.firebaseapp.com",
