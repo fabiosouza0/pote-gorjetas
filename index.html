@@ -80,12 +80,32 @@
       amountEl.textContent = total;
     });
     
-    // Ao carregar a página
-    let senha = localStorage.getItem('tipjar_senha');
-    if(!senha) {
-      senha = prompt("defina a senha do pote de gorjetas: ");
-      localStorage.setItem("tipjar_senha", senha);
+    // Função para obter senha válida
+    async function getValidPassword() {
+      let senha = localStorage.getItem('tipjar_senha');
+      let valid = false;
+    
+      while(!valid) {
+        try {
+          // tenta escrever temporariamente com 0 para testar
+          await set(ref(db, "total/teste_senha"), { valor: 0, senha });
+          valid = true; // se chegou aqui, senha está correta
+          // remove nó de teste
+          await set(ref(db, "total/teste_senha"), null);
+        } catch(e) {
+          // se der erro, pede nova senha
+          senha = prompt("Senha incorreta! Digite novamente:");
+          localStorage.setItem('tipjar_senha', senha);
+        }
+      }
+      return senha;
     }
+    
+    // Ao carregar o site
+    (async ()=>{
+      const senhaValida = await getValidPassword();
+      console.log("Senha válida:", senhaValida);
+    })();
 
     // Função para adicionar gorjeta
     addBtn.addEventListener("click", async () => {
