@@ -43,106 +43,112 @@ button{border:0;padding:12px;border-radius:10px;font-weight:700;cursor:pointer}
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-    // 🔥 Substitua pelos dados do seu Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyDe_CON0OGCFSQTRdSdIl_80Lz9f3hIUTM",
-      authDomain: "pote-gorjetas.firebaseapp.com",
-      databaseURL: "https://pote-gorjetas-default-rtdb.firebaseio.com",
-      projectId: "pote-gorjetas",
-      storageBucket: "pote-gorjetas.firebasestorage.app",
-      messagingSenderId: "184073135173",
-      appId: "1:184073135173:web:b91c4f0cf268a4ee2b2f2c"
-    };
+/* ======== COLE AQUI SEU FIREBASE CONFIG (substitua o objeto abaixo) ========
+const firebaseConfig = {
+  apiKey: "SUA_APIKEY",
+  authDomain: "SEU-PROJETO.firebaseapp.com",
+  databaseURL: "https://SEU-PROJETO-default-rtdb.firebaseio.com",
+  projectId: "SEU-PROJETO",
+  storageBucket: "SEU-PROJETO.appspot.com",
+  messagingSenderId: "....",
+  appId: "1:...:web:..."
+};
+=========================================================================== */
+const firebaseConfig = /* COLE AQUI SEU FIREBASE CONFIG */ {};
 
-    // Inicializa Firebase
-    if(!firebaseConfig || !firebaseConfig.apiKey){
-      document.getElementById('status').textContent = 'Cole o firebaseConfig no arquivo e recarregue a página.';
-      throw new Error('Coloque o firebaseConfig');
+// Inicializa Firebase
+if(!firebaseConfig || !firebaseConfig.apiKey){
+  document.getElementById('status').textContent = 'Cole o firebaseConfig no arquivo e recarregue a página.';
+  throw new Error('Coloque o firebaseConfig');
+}
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const STEP = 5;
+const amountEl = document.getElementById('amount');
+const addBtn = document.getElementById('add5');
+const resetBtn = document.getElementById('reset');
+const jar = document.getElementById('jar');
+const statusEl = document.getElementById('status');
+
+let localTotal = 0;
+let updating = false;
+
+// Listener: atualiza quando o valor no DB muda
+const totalRef = db.ref('tipjar/total');
+totalRef.on('value', snap => {
+  const val = snap.val();
+  if(val == null) {
+    // inicializa no DB se não existir
+    totalRef.set(0).catch(console.error);
+    return;
+  }
+  const newTotal = parseInt(val, 10) || 0;
+  // Se a diferença for positiva e não veio do próprio clique local (ou veio), animar moedas
+  const delta = newTotal - localTotal;
+  if(delta > 0) spawnCoins(delta);
+  localTotal = newTotal;
+  amountEl.textContent = localTotal;
+  statusEl.textContent = 'Conectado';
+});
+
+// Função para incrementar usando transaction (evita corridas)
+function addAmount(n){
+  if(updating) return; // evita spam local — transações já protegem, isso é UX
+  updating = true;
+  totalRef.transaction(current => {
+    return (current || 0) + n;
+  }, (err, committed, snapshot) => {
+    updating = false;
+    if(err) {
+      console.error('Transação falhou', err);
+      statusEl.textContent = 'Erro ao atualizar';
+    } else if(!committed) {
+      statusEl.textContent = 'Não confirmado';
+    } else {
+      // spawnCoins será chamado pela listener assim que o value for propagado
+      // mas podemos tocar feedback imediato:
+      // spawnCoins(n);
+      statusEl.textContent = 'Atualizado';
+      setTimeout(()=> statusEl.textContent = 'Conectado', 800);
     }
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    
-    const STEP = 5;
-    const amountEl = document.getElementById('amount');
-    const addBtn = document.getElementById('add5');
-    const resetBtn = document.getElementById('reset');
-    const jar = document.getElementById('jar');
-    const statusEl = document.getElementById('status');
-    
-    let localTotal = 0;
-    let updating = false;
-    
-    // Listener: atualiza quando o valor no DB muda
-    const totalRef = db.ref('tipjar/total');
-    totalRef.on('value', snap => {
-      const val = snap.val();
-      if(val == null) {
-        // inicializa no DB se não existir
-        totalRef.set(0).catch(console.error);
-        return;
-      }
-      const newTotal = parseInt(val, 10) || 0;
-      // Se a diferença for positiva e não veio do próprio clique local (ou veio), animar moedas
-      const delta = newTotal - localTotal;
-      if(delta > 0) spawnCoins(delta);
-      localTotal = newTotal;
-      amountEl.textContent = localTotal;
-      statusEl.textContent = 'Conectado';
-    });
+  });
+}
 
+// Resetar (substitui valor) — só use se realmente quiser permitir reset público
+resetBtn.addEventListener('click', () => {
+  if(!confirm('Redefinir total para 0?')) return;
+  totalRef.set(0).catch(err => {
+    console.error(err);
+    statusEl.textContent = 'Erro ao resetar';
+  });
+});
 
-    // Função para incrementar usando transaction (evita corridas)
-    function addAmount(n){
-      if(updating) return; // evita spam local — transações já protegem, isso é UX
-      updating = true;
-      totalRef.transaction(current => {
-        return (current || 0) + n;
-      }, (err, committed, snapshot) => {
-        updating = false;
-        if(err) {
-          console.error('Transação falhou', err);
-          statusEl.textContent = 'Erro ao atualizar';
-        } else if(!committed) {
-          statusEl.textContent = 'Não confirmado';
-        } else {
-          // spawnCoins será chamado pela listener assim que o value for propagado
-          // mas podemos tocar feedback imediato:
-          // spawnCoins(n);
-          statusEl.textContent = 'Atualizado';
-          setTimeout(()=> statusEl.textContent = 'Conectado', 800);
-        }
-      });
-    }
+// Clique +5
+addBtn.addEventListener('click', ()=> addAmount(STEP));
 
-    // Resetar (substitui valor) — só use se realmente quiser permitir reset público
-    resetBtn.addEventListener('click', () => {
-      if(!confirm('Redefinir total para 0?')) return;
-      totalRef.set(0).catch(err => {
-        console.error(err);
-        statusEl.textContent = 'Erro ao resetar';
-      });
-    });
+// animação de moedas (igual ao protótipo)
+function spawnCoins(n){
+  const coins = Math.min(8, Math.ceil(n / STEP));
+  for(let i=0;i<coins;i++){
+    const c = document.createElement('div');
+    c.className = 'coin';
+    c.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#ffd166"/><path d="M12 8v8M9 11h6" stroke="#0b1220" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    const jarRect = jar.getBoundingClientRect();
+    const left = Math.random() * (jarRect.width - 40) + 8;
+    c.style.left = left + 'px';
+    c.style.bottom = (8 + Math.random() * 18) + 'px';
+    c.style.animationDuration = (0.9 + Math.random() * 0.6) + 's';
+    jar.appendChild(c);
+    c.addEventListener('animationend', ()=> c.remove());
+  }
+}
 
-    // animação das moedinhas
-    function spawnCoins(n) {
-      const coins = Math.min(8, Math.ceil(n / 5));
-      for (let i = 0; i < coins; i++) {
-        const c = document.createElement("div");
-        c.className = "coin";
-        c.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36"><circle cx="12" cy="12" r="10" fill="#ffd166"/><path d="M12 8v8M9 11h6" stroke="#0b1220" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-        const jarRect = jar.getBoundingClientRect();
-        c.style.left = Math.random() * (jarRect.width - 40) + "px";
-        c.style.bottom = "10px";
-        jar.appendChild(c);
-        c.addEventListener("animationend", () => c.remove());
-      }
-    }
-
-    // fallback: se desconectar do DB
-    db.ref('.info/connected').on('value', snap => {
-      const con = snap.val();
-      statusEl.textContent = con ? 'Conectado' : 'Offline';
-    });
-  </script>
+// fallback: se desconectar do DB
+db.ref('.info/connected').on('value', snap => {
+  const con = snap.val();
+  statusEl.textContent = con ? 'Conectado' : 'Offline';
+});
+</script>
 </body>
 </html>
