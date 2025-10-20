@@ -54,15 +54,16 @@
     import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
     // 🔥 Substitua pelos dados do seu Firebase
-    const firebaseConfig = {
-      apiKey: "SUA_API_KEY_AQUI",
-      authDomain: "SEU_PROJETO.firebaseapp.com",
-      databaseURL: "https://SEU_PROJETO.firebaseio.com",
-      projectId: "SEU_PROJETO",
-      storageBucket: "SEU_PROJETO.appspot.com",
-      messagingSenderId: "SEU_ID",
-      appId: "SUA_APP_ID"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyDe_CON0OGCFSQTRdSdIl_80Lz9f3hIUTM",
+    authDomain: "pote-gorjetas.firebaseapp.com",
+    databaseURL: "https://pote-gorjetas-default-rtdb.firebaseio.com",
+    projectId: "pote-gorjetas",
+    storageBucket: "pote-gorjetas.firebasestorage.app",
+    messagingSenderId: "184073135173",
+    appId: "1:184073135173:web:b91c4f0cf268a4ee2b2f2c"
+  };
+
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
