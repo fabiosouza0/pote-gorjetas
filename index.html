@@ -135,16 +135,18 @@ function spawnCoins(n){
   for(let i=0;i<coins;i++){
     const c = document.createElement('div');
     c.className = 'coin';
-    c.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#ffd166"/><path d="M12 8v8M9 11h6" stroke="#0b1220" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    c.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36"><circle cx="12" cy="12" r="10" fill="#ffd166"/><path d="M12 8v8M9 11h6" stroke="#0b1220" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
     const jarRect = jar.getBoundingClientRect();
     const left = Math.random() * (jarRect.width - 40) + 8;
     c.style.left = left + 'px';
     c.style.bottom = (8 + Math.random() * 18) + 'px';
-    c.style.animationDuration = (0.9 + Math.random() * 0.6) + 's';
+    c.style.transform = 'translateY(0) rotate(0deg) scale(1)';
+    c.style.animation = `floatUp ${(0.9 + Math.random() * 0.6)}s forwards cubic-bezier(.2,.9,.2,1)`;
     jar.appendChild(c);
     c.addEventListener('animationend', ()=> c.remove());
   }
 }
+
 
 // fallback: se desconectar do DB
 db.ref('.info/connected').on('value', snap => {
