@@ -5,220 +5,114 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Pote de Gorjetas</title>
 <style>
-  :root{
-    --bg:#0f1724;
-    --card:#0b1220;
-    --accent:#ffd166;
-    --muted:#9aa6b2;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background:linear-gradient(180deg,var(--bg) 0%, #071024 100%);
-    color:#e6eef6;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-  }
-  .card{
-    width:min(720px,100%);
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius:18px;
-    padding:20px;
-    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
-    display:grid;
-    grid-template-columns: 1fr 220px;
-    gap:16px;
-    align-items:center;
-  }
-
-  .left{
-    padding:8px 12px;
-  }
-  h1{margin:0 0 8px 0; font-size:20px}
-  p{margin:0 0 14px 0; color:var(--muted)}
-  .jar{
-    background:linear-gradient(180deg,#071428 0%, #033050 100%);
-    border-radius:12px;
-    padding:12px;
-    min-height:120px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,0.03);
-  }
-  .total{
-    font-weight:700;
-    font-size:36px;
-    letter-spacing:0.5px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  .coin-icon{width:28px;height:28px;transform:translateY(2px)}
-  .muted{color:var(--muted); font-size:13px; margin-top:6px}
-
-  .controls{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    align-items:stretch;
-  }
-  button{
-    border:0;
-    padding:14px;
-    border-radius:12px;
-    font-weight:700;
-    font-size:16px;
-    cursor:pointer;
-    box-shadow: 0 6px 18px rgba(2,6,23,0.35);
-  }
-  .btn-add{
-    background:linear-gradient(90deg, #ffb84d, #ffd166);
-    color:#0a0a0a;
-  }
-  .btn-reset{
-    background:transparent;
-    color:var(--muted);
-    border:1px solid rgba(255,255,255,0.03);
-  }
-
-  /* animação das moedas */
-  .coin {
-    position:absolute;
-    width:36px;
-    height:36px;
-    will-change:transform, opacity;
-    animation: floatUp 1.2s forwards cubic-bezier(.2,.9,.2,1);
-    pointer-events:none;
-  }
-  @keyframes floatUp{
-    0%{transform: translateY(0) scale(1) rotate(0deg); opacity:1}
-    30%{transform: translateY(-40px) scale(1.08) rotate(10deg); opacity:1}
-    100%{transform: translateY(-160px) scale(.8) rotate(60deg); opacity:0}
-  }
-
-  /* responsivo: card em coluna no celular */
-  @media (max-width:720px){
-    .card{grid-template-columns:1fr; padding:16px}
-    .controls{flex-direction:row}
-    .controls > *{flex:1}
-  }
+  /* Seu CSS original permanece igual */
+  :root{--bg:#0f1724;--card:#0b1220;--accent:#ffd166;--muted:#9aa6b2;}
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;font-family:Inter,system-ui;background:linear-gradient(180deg,var(--bg) 0%,#071024 100%);
+  color:#e6eef6;display:flex;align-items:center;justify-content:center;padding:20px}
+  .card{width:min(720px,100%);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+  border-radius:18px;padding:20px;box-shadow:0 8px 30px rgba(2,6,23,0.6);display:grid;grid-template-columns:1fr 220px;gap:16px;align-items:center}
+  h1{margin:0 0 8px;font-size:20px}p{margin:0 0 14px;color:var(--muted)}
+  .jar{background:linear-gradient(180deg,#071428 0%,#033050 100%);border-radius:12px;padding:12px;min-height:120px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.03)}
+  .total{font-weight:700;font-size:36px;display:flex;align-items:center;gap:8px}
+  .coin-icon{width:28px;height:28px;transform:translateY(2px)}.muted{color:var(--muted);font-size:13px;margin-top:6px}
+  .controls{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+  button{border:0;padding:14px;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;
+  box-shadow:0 6px 18px rgba(2,6,23,0.35)}
+  .btn-add{background:linear-gradient(90deg,#ffb84d,#ffd166);color:#0a0a0a}
+  .btn-reset{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
+  .coin{position:absolute;width:36px;height:36px;animation:floatUp 1.2s forwards cubic-bezier(.2,.9,.2,1);pointer-events:none}
+  @keyframes floatUp{0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1}30%{transform:translateY(-40px) scale(1.08) rotate(10deg);opacity:1}100%{transform:translateY(-160px) scale(.8) rotate(60deg);opacity:0}}
+  @media(max-width:720px){.card{grid-template-columns:1fr;padding:16px}.controls{flex-direction:row}.controls>*{flex:1}}
 </style>
 </head>
 <body>
-  <div class="card" role="application" aria-label="Pote de gorjetas">
-    <div class="left">
+  <div class="card">
+    <div>
       <h1>Pote de Gorjetas</h1>
-      <p>Toque no botão para adicionar gorjetas. Compartilhe a tela para que outros vejam em tempo real.</p>
-
-      <div class="jar" id="jar" aria-live="polite">
-        <div class="total"><svg class="coin-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" fill="#ffd166"/><path d="M12 8v8M9 11h6" stroke="#0b1220" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span id="amount">0</span>
-          <span class="muted">¢</span>
+      <p>Toque em "+5" para adicionar gorjetas. Compartilhe este link com amigos!</p>
+      <div class="jar" id="jar">
+        <div class="total">
+          <svg class="coin-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#ffd166"/><path d="M12 8v8M9 11h6" stroke="#0b1220" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="amount">0</span><span class="muted">¢</span>
         </div>
         <div class="muted" id="subtitle">Total de gorjetas</div>
       </div>
     </div>
-
     <div class="controls">
-      <button class="btn-add" id="add5" aria-label="Adicionar 5">+5</button>
-      <button class="btn-reset" id="reset" aria-label="Redefinir">Redefinir</button>
+      <button class="btn-add" id="add5">+5</button>
+      <button class="btn-reset" id="reset">Redefinir</button>
     </div>
   </div>
 
-<script>
-(function(){
-  // Configuráveis
-  const STEP = 5; // quantos centavos por clique (mude para 1,5,10 etc)
-  const STORAGE_KEY = 'tipjar_total_v1';
+  <!-- Firebase -->
+  <script type="module">
+    // Importa módulos Firebase diretamente do CDN
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-  // Referências DOM
-  const amountEl = document.getElementById('amount');
-  const jar = document.getElementById('jar');
-  const addBtn = document.getElementById('add5');
-  const resetBtn = document.getElementById('reset');
+    // 🔥 Substitua pelos dados do seu Firebase
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY_AQUI",
+      authDomain: "SEU_PROJETO.firebaseapp.com",
+      databaseURL: "https://SEU_PROJETO.firebaseio.com",
+      projectId: "SEU_PROJETO",
+      storageBucket: "SEU_PROJETO.appspot.com",
+      messagingSenderId: "SEU_ID",
+      appId: "SUA_APP_ID"
+    };
 
-  // Carrega valor salvo
-  let total = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
-  updateDisplay();
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-  // Ao clicar +5
-  addBtn.addEventListener('click', ()=> {
-    addAmount(STEP);
-  });
+    const amountEl = document.getElementById("amount");
+    const addBtn = document.getElementById("add5");
+    const resetBtn = document.getElementById("reset");
+    const jar = document.getElementById("jar");
+    let total = 0;
 
-  // Atalho com toque longo para +50 (UX extra)
-  let holdTimer = null;
-  addBtn.addEventListener('touchstart', ()=> {
-    holdTimer = setTimeout(()=> addAmount(STEP * 10), 600);
-  }, {passive:true});
-  addBtn.addEventListener('touchend', ()=> clearTimeout(holdTimer));
+    // Escuta alterações em tempo real
+    const totalRef = ref(db, "total/valor");
+    onValue(totalRef, (snapshot) => {
+      total = snapshot.val() || 0;
+      amountEl.textContent = total;
+    });
 
-  resetBtn.addEventListener('click', ()=>{
-    if(!confirm('Redefinir total?')) return;
-    total = 0;
-    persist();
-    updateDisplay();
-  });
+    // Adicionar gorjeta (com senha simples)
+    addBtn.addEventListener("click", async () => {
+      const senha = prompt("Digite a senha para adicionar:");
+      if (senha !== "gorjeta123") {
+        alert("Senha incorreta!");
+        return;
+      }
+      total += 5;
+      spawnCoins(5);
+      await set(ref(db, "total"), { valor: total, senha });
+    });
 
-  // Função que atualiza o total e cria animações de coin
-  function addAmount(n){
-    total = total + n;
-    persist();
-    spawnCoins(n);
-    updateDisplay();
-    // vibra se disponível
-    if(navigator.vibrate) navigator.vibrate(60);
-  }
+    // Resetar (também com senha)
+    resetBtn.addEventListener("click", async () => {
+      const senha = prompt("Senha para redefinir:");
+      if (senha !== "gorjeta123") return alert("Senha incorreta!");
+      await set(ref(db, "total"), { valor: 0, senha });
+    });
 
-  function updateDisplay(){
-    amountEl.textContent = total.toString();
-  }
-
-  function persist(){
-    localStorage.setItem(STORAGE_KEY, String(total));
-  }
-
-  // Criar pequenas moedas que flutuam para cima
-  function spawnCoins(n){
-    const coins = Math.min(8, Math.ceil(n/STEP)); // até 8 moedas visuais
-    for(let i=0;i<coins;i++){
-      const c = document.createElement('div');
-      c.className = 'coin';
-      // pequeno SVG inline para evitar assets externos
-      c.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#ffd166" /><path d="M12 8v8M9 11h6" stroke="#0b1220" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-      // posição inicial aleatória na largura do jar
-      const jarRect = jar.getBoundingClientRect();
-      const left = Math.random() * (jarRect.width - 40) + 8;
-      c.style.left = left + 'px';
-      c.style.bottom = (10 + Math.random()*10) + 'px';
-      c.style.transform = `translateY(0) rotate(${(Math.random()*40-20)}deg) scale(${0.9 + Math.random()*0.3})`;
-      // ligeira variação de duração
-      c.style.animationDuration = (1 + Math.random()*0.6) + 's';
-      jar.appendChild(c);
-      // remover depois da animação
-      c.addEventListener('animationend', ()=> c.remove());
+    // animação das moedinhas
+    function spawnCoins(n) {
+      const coins = Math.min(8, Math.ceil(n / 5));
+      for (let i = 0; i < coins; i++) {
+        const c = document.createElement("div");
+        c.className = "coin";
+        c.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36"><circle cx="12" cy="12" r="10" fill="#ffd166"/><path d="M12 8v8M9 11h6" stroke="#0b1220" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+        const jarRect = jar.getBoundingClientRect();
+        c.style.left = Math.random() * (jarRect.width - 40) + "px";
+        c.style.bottom = "10px";
+        jar.appendChild(c);
+        c.addEventListener("animationend", () => c.remove());
+      }
     }
-  }
-
-  // Expor função global para testing/debug
-  window.__tipjar = { addAmount, getTotal: ()=> total };
-
-  // Optional: sincronização simples com outras abas do navegador
-  window.addEventListener('storage', (ev)=>{
-    if(ev.key === STORAGE_KEY) {
-      total = parseInt(ev.newValue||'0',10);
-      updateDisplay();
-    }
-  });
-})();
-</script>
+  </script>
 </body>
 </html>
