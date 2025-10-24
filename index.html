@@ -223,9 +223,9 @@
         }
 
         // --- Nova Função: Disparar Moedas ---
-        function spawnCoins(amount = 1, ) {
+        function spawnCoins(amount) {
             // Limita o número de moedas para evitar sobrecarga (ex: doação de R$1000)
-            const maxCoins = 1000
+            const maxCoins = 50
             const numberOfCoins = Math.min(amount, maxCoins); // Dispara no máximo 50 moedas
 
             for (let i = 0; i < numberOfCoins; i++) {
@@ -251,7 +251,7 @@
         }
         async function loopMoedas() {
         	while (true) {
-            	spawnCoins();
+            	spawnCoins(Math.min(currentAmount/10000));
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
         }
