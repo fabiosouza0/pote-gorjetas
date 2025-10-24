@@ -1,158 +1,307 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Pote de Gorjetas — Compartilhado</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
-<style>
-/* (mesmo estilo do protótipo anterior, simplificado) */
-:root{--bg:#0f1724;--muted:#9aa6b2}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui;display:flex;align-items:center;justify-content:center;height:100vh;background:#071427;color:#e6eef6;padding:16px}
-.card{width:min(720px,100%);background:rgba(255,255,255,0.02);padding:18px;border-radius:14px;display:grid;grid-template-columns:1fr 180px;gap:12px}
-@media(max-width:720px){.card{grid-template-columns:1fr}.controls{flex-direction:row}}
-.jar{background:linear-gradient(180deg,#01283a,#013a50);border-radius:12px;padding:16px;position:relative;overflow:hidden;min-height:120px}
-.total{font-size:36px;font-weight:700;display:flex;align-items:center;gap:8px}
-.controls{display:flex;flex-direction:column;gap:10px;align-items:stretch}
-button{border:0;padding:12px;border-radius:10px;font-weight:700;cursor:pointer}
-.btn-add{background:linear-gradient(90deg,#ffb84d,#ffd166);color:#071322}
-.btn-reset{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
-.coin{position:absolute;width:36px;height:36px;animation:floatUp 1.1s forwards;pointer-events:none}
-@keyframes floatUp{0%{transform:translateY(0) opacity:1}100%{transform:translateY(-150px) scale(.8) rotate(50deg) opacity:0}}
-.muted{color:var(--muted);font-size:13px}
-
-body {
-  font-family: 'Noto Serif', Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-  
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casamento - Operação Gravatinha!</title>
+    
+    <!-- Tailwind CSS CDN --><script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts --><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Configuração customizada do Tailwind --><script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'navy': '#0A1931',
+                        'gold': '#D4AF37',
+                        'ivory': '#F9F9F7',
+                        'light-gray': '#E0E0E0',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        #progressBar {
+            transition: width 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
 </head>
-<body>
-  <div class="card" role="application">
-    <div>
-      <h1>Gravatinha</h1>
-      <div class="jar" id="jar" aria-live="polite">
-        <div class="total"><span id="amount">0</span> <span class="muted">¢</span></div>
-        <div id="subtitle" class="muted">Total</div>
-      </div>
+<body class="bg-ivory font-sans text-navy">
+
+    <div class="container mx-auto p-4 min-h-screen flex items-center justify-center">
+        
+        <div class="w-full max-w-lg bg-white p-6 sm:p-10 rounded-xl shadow-2xl text-center" style="z-index:99999999">
+            
+            <h1 class="font-serif text-4xl md:text-5xl text-navy mb-2">Isabela & Iago</h1>
+            
+            <p class="text-xl font-semibold text-gold mb-6 tracking-wide">
+                Operação Gravatinha!
+            </p>
+
+            <div class="mb-6">
+                <div class="flex justify-between text-sm font-medium text-navy mb-1">
+                    <span>Arrecadado</span>
+                    <span>Meta</span>
+                </div>
+                
+                <div class="w-full bg-light-gray rounded-full h-8 overflow-hidden border border-gray-200">
+                    <div id="progressBar" class="bg-gradient-to-r from-yellow-400 to-gold h-8 rounded-full flex items-center justify-center text-white font-bold" style="width: 0%">
+                        <span id="progressText" class="opacity-0 transition-opacity duration-500"></span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between text-lg font-bold text-navy mt-2">
+                    <span id="currentAmountText">R$ 0,00</span>
+                    <span id="goalAmountText">R$ 1.000,00</span>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-navy mt-10 mb-5">
+                Estamos quase lá! Vem surpresa...
+            </h2>
+
+            <div class="grid grid-cols-3 gap-3 sm:gap-4 mb-4">
+                <button onclick="addDonation(20)" class="bg-ivory text-navy font-medium py-3 rounded-lg shadow-md hover:bg-gold hover:text-white transition-all duration-300 transform hover:scale-105">
+                    R$ 20
+                </button>
+                <button onclick="addDonation(50)" class="bg-ivory text-navy font-medium py-3 rounded-lg shadow-md hover:bg-gold hover:text-white transition-all duration-300 transform hover:scale-105">
+                    R$ 50
+                </button>
+                <button onclick="addDonation(100)" class="bg-ivory text-navy font-medium py-3 rounded-lg shadow-md hover:bg-gold hover:text-white transition-all duration-300 transform hover:scale-105">
+                    R$ 100
+                </button>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                <input 
+                    type="number" 
+                    id="customAmount" 
+                    placeholder="Outro valor (R$)" 
+                    min="1"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:outline-none text-center sm:text-left"
+                >
+                <button onclick="addCustomDonation()" class="w-full sm:w-auto bg-navy text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-opacity-90 transition-all duration-300 flex-shrink-0">
+                    Contribuir
+                </button>
+            </div>
+            
+            <!-- Mensagem de Agradecimento -->
+            <div id="message" class="text-green-600 font-semibold h-6 transition-all duration-300">
+                <!-- Mensagens como "Obrigado!" aparecerão aqui -->
+            </div>
+            
+        </div>
     </div>
-    <div class="controls">
-      <button id="add5" class="btn-add">+5</button>
-      <button id="reset" class="btn-reset">Redefinir</button>
-      <div id="status" class="muted" style="font-size:12px;text-align:center;margin-top:6px">Conectando...</div>
-    </div>
-  </div>
 
-  <!-- Firebase CDN (versão compatível v8 — simples de integrar) -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDe_CON0OGCFSQTRdSdIl_80Lz9f3hIUTM",
-  authDomain: "pote-gorjetas.firebaseapp.com",
-  databaseURL: "https://pote-gorjetas-default-rtdb.firebaseio.com",
-  projectId: "pote-gorjetas",
-  storageBucket: "pote-gorjetas.firebasestorage.app",
-  messagingSenderId: "184073135173",
-  appId: "1:184073135173:web:b91c4f0cf268a4ee2b2f2c"
-};
-
-// Inicializa Firebase
-if(!firebaseConfig || !firebaseConfig.apiKey){
-  document.getElementById('status').textContent = 'Cole o firebaseConfig no arquivo e recarregue a página.';
-  throw new Error('Coloque o firebaseConfig');
-}
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-const STEP = 5;
-const amountEl = document.getElementById('amount');
-const addBtn = document.getElementById('add5');
-const resetBtn = document.getElementById('reset');
-const jar = document.getElementById('jar');
-const statusEl = document.getElementById('status');
-
-let localTotal = 0;
-let updating = false;
-
-// Listener: atualiza quando o valor no DB muda
-const totalRef = db.ref('tipjar/total');
-totalRef.on('value', snap => {
-  const val = snap.val();
-  if(val == null) {
-    // inicializa no DB se não existir
-    totalRef.set(0).catch(console.error);
-    return;
-  }
-  const newTotal = parseInt(val, 10) || 0;
-  // Se a diferença for positiva e não veio do próprio clique local (ou veio), animar moedas
-  const delta = newTotal - localTotal;
-  if(delta > 0) spawnCoins(delta);
-  localTotal = newTotal;
-  amountEl.textContent = localTotal;
-  statusEl.textContent = '';
-});
-
-// Função para incrementar usando transaction (evita corridas)
-function addAmount(n){
-  if(updating) return; // evita spam local — transações já protegem, isso é UX
-  updating = true;
-  totalRef.transaction(current => {
-    return (current || 0) + n;
-  }, (err, committed, snapshot) => {
-    updating = false;
-    if(err) {
-      console.error('Transação falhou', err);
-      statusEl.textContent = 'Erro ao atualizar';
-    } else if(!committed) {
-      statusEl.textContent = 'Não confirmado';
-    } else {
-      // spawnCoins será chamado pela listener assim que o value for propagado
-      // mas podemos tocar feedback imediato:
-      // spawnCoins(n);
-      statusEl.textContent = 'Atualizado';
-      setTimeout(()=> statusEl.textContent = 'Conectado', 800);
-    }
-  });
-}
-
-// Resetar (substitui valor) — só use se realmente quiser permitir reset público
-resetBtn.addEventListener('click', () => {
-  if(!confirm('Redefinir total para 0?')) return;
-  totalRef.set(0).catch(err => {
-    console.error(err);
-    statusEl.textContent = 'Erro ao resetar';
-  });
-});
-
-// Clique +5
-addBtn.addEventListener('click', ()=> addAmount(STEP));
-
-// animação de moedas (igual ao protótipo)
-function spawnCoins(n){
-  const coins = Math.min(8, Math.ceil(n / STEP));
-  for(let i=0;i<coins;i++){
-    const c = document.createElement('div');
-    c.className = 'coin';
-    c.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36"><circle cx="12" cy="12" r="10" fill="#ffd166"/><path d="M12 8v8M9 11h6" stroke="#0b1220" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-    const jarRect = jar.getBoundingClientRect();
-    const left = Math.random() * (jarRect.width - 40) + 8;
-    c.style.left = left + 'px';
-    c.style.bottom = (8 + Math.random() * 18) + 'px';
-    c.style.transform = 'translateY(0) rotate(0deg) scale(1)';
-    c.style.animation = `floatUp ${(0.9 + Math.random() * 0.6)}s forwards cubic-bezier(.2,.9,.2,1)`;
-    jar.appendChild(c);
-    c.addEventListener('animationend', ()=> c.remove());
-  }
-}
+    <!-- Biblioteca de Confetes --><script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 
-// fallback: se desconectar do DB
-db.ref('.info/connected').on('value', snap => {
-  const con = snap.val();
-  statusEl.textContent = con ? 'Conectado' : 'Offline';
-});
-</script>
+
+    <!-- JavaScript para a Lógica --><script>
+        // --- Configuração ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyDe_CON0OGCFSQTRdSdIl_80Lz9f3hIUTM",
+          authDomain: "pote-gorjetas.firebaseapp.com",
+          databaseURL: "https://pote-gorjetas-default-rtdb.firebaseio.com",
+          projectId: "pote-gorjetas",
+          storageBucket: "pote-gorjetas.firebasestorage.app",
+          messagingSenderId: "184073135173",
+          appId: "1:184073135173:web:b91c4f0cf268a4ee2b2f2c"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const totalRef = db.ref('tipjar/total');
+        // Escuta mudanças no Firebase
+        totalRef.on('value', (snapshot) => {
+            const data = snapshot.val() || 0;
+            currentAmount = data;
+            updateDisplay();
+        });
+
+        const goalAmount = 1000;
+        let currentAmount = 0;
+        let disparandoConfete = false;
+        
+
+
+        // --- Elementos do DOM ---
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const currentAmountText = document.getElementById('currentAmountText');
+        const goalAmountText = document.getElementById('goalAmountText');
+        const customAmountInput = document.getElementById('customAmount');
+        const messageEl = document.getElementById('message');
+
+        // --- Formatação de Moeda ---
+        const formatter = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+        });
+
+        // --- Inicialização ---
+        function initialize() {
+            goalAmountText.innerText = formatter.format(goalAmount);
+            updateDisplay();
+        }
+
+        // --- Função Principal: Atualizar Exibição ---
+        function updateDisplay() {
+            currentAmountText.innerText = formatter.format(currentAmount);
+
+            let percentage = (currentAmount / goalAmount) * 100;
+    //        if (percentage > 100) {
+  //              percentage = 100;
+//            }
+
+            progressBar.style.width = (percentage > 100 ? 100 : percentage) + '%';
+
+            if (percentage > 15) {
+                progressText.innerText = Math.floor(percentage) + '%';
+                progressText.style.opacity = '1';
+            } else {
+                progressText.style.opacity = '0';
+            }
+            
+            // Verifica se a meta foi atingida pela primeira vez
+            if (currentAmount >= goalAmount && disparandoConfete == false) {
+            	disparandoConfete = true;
+                spawnCofetti(); // true para disparar confetes
+                progressBar.classList.remove('from-yellow-400', 'to-gold');
+                progressBar.classList.add('bg-green-500'); 
+            }
+        }
+        
+        function sleep(ms) {
+        	return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // --- Função para mostrar mensagem temporária e disparar confetes ---
+        async function spawnCofetti() {
+          
+          // Dispara os confetes com cores mais festivas ou douradas	
+          while (currentAmount >= goalAmount) {
+
+            confetti({
+              particleCount: 300,
+              spread: 70,
+              origin: { y: 1 },
+              colors: ['#D4AF37', '#FFD700', '#FFFFFF', '#0A1931'] 
+            });
+			await sleep(100);
+
+            confetti({
+              particleCount: 100,
+              spread: 80,
+              origin: { y: 1, x: 0.2 },
+              colors: ['#D4AF37', '#FFD700', '#FFFFFF']
+            });
+			await sleep(100);
+
+            confetti({
+              particleCount: 100,
+              spread: 80,
+              origin: { y: 1, x: 0.8 },
+              colors: ['#D4AF37', '#FFD700', '#FFFFFF']
+            });
+			await sleep(3000);
+
+          }
+          disparandoConfete = false;
+		
+        }
+
+        // --- Nova Função: Disparar Moedas ---
+        function spawnCoins(amount = 1, ) {
+            // Limita o número de moedas para evitar sobrecarga (ex: doação de R$1000)
+            const maxCoins = 1000
+            const numberOfCoins = Math.min(amount, maxCoins); // Dispara no máximo 50 moedas
+
+            for (let i = 0; i < numberOfCoins; i++) {
+                // Gera uma posição X aleatória no topo da tela
+                const randomX = Math.random(); 
+
+                confetti({
+                    particleCount: 1, // Apenas uma "partícula" por moeda
+                    startVelocity: 10, // Velocidade inicial para baixo
+                    spread: 15,         // Sem espalhamento lateral
+                    ticks: 1000,        // Duração da queda
+                    origin: {
+                        x: randomX,
+                        y: 0, // Começa no topo da tela
+                    },
+                    scalar: 2,       // Tamanho da moeda
+                    shapes: ['circle'],// Usa círculos para simular moedas
+                    colors: ['#D4AF37'], // Cores de ouro
+                    gravity: 0.6,      // Aumenta a gravidade para cair mais rápido
+                    drift: (Math.random() - 0.5) * 0.4 // Pequeno desvio lateral
+                });
+            }
+        }
+        async function loopMoedas() {
+        	while (true) {
+            	spawnCoins();
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+        }
+        loopMoedas();
+
+        // --- Funções de Doação ---
+        function addDonation(amount) {
+            
+            totalRef.transaction(current => {
+            	return (current || 0) + amount;
+            });
+            
+            // Só dispara moedas se o valor adicionado for positivo.
+            if (amount > 0) {
+            	spawnCoins(amount);
+            }
+
+        }
+
+        function addCustomDonation() {
+
+            const amount = parseFloat(customAmountInput.value);
+            if (!isNaN(amount)) {
+                const previousAmount = currentAmount;
+                currentAmount = Math.max(currentAmount + amount, 0);
+
+                // Só dispara moedas se o valor adicionado for positivo.
+                if (amount > 0) {
+                    spawnCoins(amount);
+                }
+
+				totalRef.transaction(current => {
+                	return (current || 0) + amount;
+                });
+                customAmountInput.value = '';
+            } else {
+                messageEl.innerText = 'Por favor, insira um valor válido.';
+                messageEl.classList.remove('text-green-600');
+                messageEl.classList.add('text-red-500');
+                
+                setTimeout(() => {
+                    messageEl.innerText = '';
+                    messageEl.classList.remove('text-red-500');
+                    messageEl.classList.add('text-green-600');
+                }, 2000);
+            }
+        }
+
+        // --- Ponto de Partida ---
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
 </body>
 </html>
